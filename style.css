@@ -1509,10 +1509,6 @@
                 padding-left: 12px;
                 border-left: 2px solid #f1f5f9;
             }
-
-            .roadmap-step:last-child .roadmap-right {
-                border-left: none;
-            }
         }
 
         /* Accent Cards */
