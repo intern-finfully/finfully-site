@@ -1,0 +1,3249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finfully | Business Compendium</title>
+
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-page: #faf9f7;
+            --bg-card: #ffffff;
+            --text-main: #111111;
+            --text-muted: #666666;
+            --accent-teal: #10B6AD;
+            --accent-teal-light: #f0fdfc;
+            --border-color: #e8e4de;
+            --nav-height: 80px;
+            --radius-lg: 12px;
+            --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.03);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-size: 16px;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: rgba(16, 182, 173, 0.2);
+            color: var(--text-main);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        .fraunces {
+            font-family: 'Fraunces', serif;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        /* Navbar Replaced Sidebar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            background: rgba(250, 249, 247, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            transition: var(--transition), box-shadow 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            box-shadow: 0 1px 0 var(--border-color), 0 4px 12px rgba(0, 0, 0, 0.05);
+            background: rgba(250, 249, 247, 0.95);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: auto;
+        }
+
+        .brand-name {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-main);
+            font-family: 'Fraunces', serif;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 12px;
+            list-style: none;
+            height: 100%;
+        }
+
+        .nav-item {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 8px 18px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-family: 'Fraunces', serif;
+            position: relative;
+            border-radius: 99px;
+        }
+
+        .nav-link:hover,
+        .nav-item:hover .nav-link {
+            color: var(--text-main);
+            background: rgba(16, 182, 173, 0.05);
+        }
+
+        .nav-link.active {
+            color: white;
+            background: var(--accent-teal);
+            box-shadow: 0 4px 12px rgba(16, 182, 173, 0.2);
+        }
+
+        /* Dropdown / Mega Menu */
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            padding: 24px;
+            min-width: 320px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1001;
+        }
+
+        .dropdown::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-top: 1px solid var(--border-color);
+            border-left: 1px solid var(--border-color);
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(8px);
+        }
+
+        .dropdown-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .dropdown-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent-teal);
+            font-weight: 800;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dropdown-title::before {
+            content: '';
+            height: 2px;
+            width: 12px;
+            background: var(--accent-teal);
+        }
+
+        .dropdown-item {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+            padding: 10px 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+
+        .dropdown-item:hover {
+            background: var(--bg-page);
+            color: var(--text-main);
+            transform: translateX(4px);
+            border-left: 2px solid var(--accent-teal);
+        }
+
+        .dropdown-icon {
+            font-size: 16px;
+            color: var(--accent-teal);
+            opacity: 0.8;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+
+        .menu-toggle span {
+            width: 24px;
+            height: 2px;
+            background: var(--text-main);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        /* Main Content Adjustments */
+        .layout {
+            display: block;
+        }
+
+        .main {
+            margin-left: 0;
+            padding-top: var(--nav-height);
+            min-height: 100vh;
+        }
+
+        .content-container {
+            padding: 32px 40px 80px;
+            max-width: 1600px;
+            /* Increased from 1350px for larger screens */
+            margin: 0 auto;
+        }
+
+        .content-group {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .content-group.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Ultra-wide Optimizations */
+        @media (min-width: 1600px) {
+            .hero-title {
+                font-size: 42px;
+            }
+
+            .grid-3,
+            .grid-2 {
+                gap: 32px;
+            }
+
+            .card {
+                padding: 32px;
+            }
+        }
+
+        /* Hero System */
+        .hero-section {
+            background-color: #f8fafc;
+            background-image:
+                linear-gradient(120deg, rgba(16, 182, 173, 0.08) 0%, rgba(250, 249, 247, 0.04) 50%, rgba(16, 182, 173, 0.08) 100%);
+            background-size: 200% 100%;
+            animation: shimmerBackground 15s infinite linear;
+            padding: 48px 40px;
+            border-radius: 24px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        @keyframes shimmerBackground {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 60%;
+            height: 140%;
+            background: radial-gradient(circle, rgba(16, 182, 173, 0.05) 0%, transparent 70%);
+            transform: rotate(-15deg);
+        }
+
+        .eyebrow {
+            display: inline-block;
+            background: #ffffff;
+            color: var(--accent-teal);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 8px rgba(16, 182, 173, 0.1);
+            border: 1px solid rgba(16, 182, 173, 0.1);
+        }
+
+        .hero-title {
+            font-size: clamp(28px, 2.8vw, 38px);
+            margin-bottom: 24px;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+            width: 100%;
+            line-height: 1.2;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 32px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        .chapter-chip {
+            background: var(--accent-teal-light);
+            color: var(--accent-teal);
+            padding: 6px 16px;
+            border-radius: 99px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            border: 1px solid rgba(16, 182, 173, 0.1);
+            font-family: 'DM Sans', sans-serif;
+            margin-bottom: 4px;
+        }
+
+        /* Hero Card Unification */
+        .hero-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 32px;
+            border-radius: 16px;
+            border: 1px solid rgba(16, 182, 173, 0.1);
+            box-shadow: 0 8px 32px rgba(16, 182, 173, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-grid::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(16, 182, 173, 0.1), transparent);
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero-card p,
+        .hero-card li {
+            color: #4a4a4a;
+            font-weight: 400;
+            font-size: 15px;
+            line-height: 1.6;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .card-heading {
+            color: #1a1a1a;
+            font-weight: 700;
+            font-size: 15.5px;
+            margin-bottom: 12px;
+            font-family: 'Fraunces', serif;
+            display: block;
+        }
+
+        .statement-list {
+            list-style: none;
+        }
+
+        .statement-item {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .statement-main {
+            font-size: 20px;
+            font-weight: 500;
+            margin-top: 24px;
+            color: var(--text-main);
+        }
+
+        .statement-accent {
+            color: var(--accent-teal);
+            font-weight: 700;
+        }
+
+        .bullet-list {
+            list-style: none;
+            margin-top: 16px;
+        }
+
+        .bullet-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        .bullet-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-teal);
+            font-weight: 700;
+        }
+
+        section {
+            margin-bottom: 56px;
+            /* Reduced from 80px */
+            scroll-margin-top: 100px;
+        }
+
+        /* Cards & Grids */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            /* Reduced from 24px */
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            /* Reduced from 24px */
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition);
+        }
+
+        .card:hover,
+        .dashboard-card:hover,
+        .not-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            border-color: var(--accent-teal);
+            cursor: pointer;
+        }
+
+        .card h4 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .card p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Tables */
+        .table-wrapper {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: var(--accent-teal-light);
+            color: var(--accent-teal);
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th:first-child {
+            border-left: 3px solid var(--accent-teal);
+        }
+
+        tr {
+            transition: background 0.15s ease;
+        }
+
+        tr:hover td {
+            background: #f7fffe !important;
+        }
+
+        /* Chapter 3 Specific: Problems Table Cost Column */
+        #problems .table-wrapper td:last-child {
+            border-left: 2px solid #fee2e2;
+        }
+
+        /* Pain Points Highlights */
+        #pain-points th:last-child {
+            background: var(--accent-teal);
+            color: white;
+        }
+
+        #pain-points td:last-child {
+            background-color: #f0fdfa;
+            font-weight: 600;
+            color: var(--text-main);
+            border-left: 2px solid rgba(16, 182, 173, 0.1);
+        }
+
+        /* Outcomes Table Metrics Column Highlight */
+        #outcomes th:last-child {
+            background: var(--accent-teal);
+            color: white;
+        }
+
+        #outcomes td:last-child {
+            background-color: #f0fdfa;
+            font-weight: 600;
+            color: var(--text-main);
+            border-left: 2px solid rgba(16, 182, 173, 0.1);
+        }
+
+
+
+        td {
+            padding: 16px 24px;
+            font-size: 14px;
+            border-bottom: 1px solid #f2f0ed;
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #faf9f7;
+        }
+
+        /* Steps / Growth Chain */
+        .step-container {
+            display: flex;
+            align-items: stretch;
+            gap: 12px;
+            margin-top: 40px;
+        }
+
+        .step-item {
+            flex: 1;
+            padding: 32px 24px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: var(--transition);
+        }
+
+        .step-item:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #cbd5e1;
+            font-size: 18px;
+            z-index: 10;
+        }
+
+        @media (max-width: 1024px) {
+            .step-container {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .step-item:not(:last-child)::after {
+                content: '↓';
+                right: auto;
+                left: 50%;
+                bottom: -20px;
+                top: auto;
+                transform: translateX(-50%);
+            }
+        }
+
+        .step-label {
+            color: var(--accent-teal);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .step-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* Architecture Grid / Pipeline Flow (Z-curve) */
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+            position: relative;
+        }
+
+        .architecture-card {
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: var(--transition);
+        }
+
+        .accent-teal-top {
+            border-top: 4px solid #0d8a86 !important;
+        }
+
+        .accent-blue-top {
+            border-top: 4px solid #3b82f6 !important;
+        }
+
+        .accent-orange-top {
+            border-top: 4px solid #f59e0b !important;
+        }
+
+        /* KPI Dashboard Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+            /* Space from table */
+            margin-bottom: 40px;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .kpi-category {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .kpi-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-main);
+            font-family: 'Fraunces', serif;
+            line-height: 1.1;
+        }
+
+        @media (max-width: 1200px) {
+            .kpi-value {
+                font-size: 26px;
+            }
+        }
+
+        .kpi-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .kpi-status {
+            margin-top: auto;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-top: 12px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-positive {
+            color: #059669;
+        }
+
+        .status-positive .status-dot {
+            background: #059669;
+        }
+
+        .status-warning {
+            color: #d97706;
+        }
+
+        .status-warning .status-dot {
+            background: #d97706;
+        }
+
+        .status-danger {
+            color: #dc2626;
+        }
+
+        .status-danger .status-dot {
+            background: #dc2626;
+        }
+
+        /* desktop grid flow control */
+        @media (min-width: 1025px) {
+            .architecture-card:nth-child(4) {
+                grid-column: 3;
+                grid-row: 2;
+            }
+
+            .architecture-card:nth-child(5) {
+                grid-column: 2;
+                grid-row: 2;
+            }
+
+            .architecture-card:nth-child(6) {
+                grid-column: 1;
+                grid-row: 2;
+            }
+        }
+
+        /* Snake Layout Arrows (Desktop) */
+        @media (min-width: 1025px) {
+            .architecture-card::after {
+                content: '';
+                position: absolute;
+                width: 24px;
+                height: 24px;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+                z-index: 5;
+                pointer-events: none;
+                filter: drop-shadow(0 2px 4px rgba(16, 182, 173, 0.2));
+            }
+
+            /* Row 1: Right Arrows */
+            .architecture-card:nth-child(1)::after,
+            .architecture-card:nth-child(2)::after {
+                right: -24px;
+                top: 50%;
+                transform: translateY(-50%);
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2310B6AD' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3' /%3E%3C/svg%3E");
+            }
+
+            /* Down Arrow */
+            .architecture-card:nth-child(3)::after {
+                bottom: -36px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2310B6AD' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3' /%3E%3C/svg%3E");
+            }
+
+            /* Row 2: Left Arrows */
+            .architecture-card:nth-child(4)::after,
+            .architecture-card:nth-child(5)::after {
+                left: -24px;
+                top: 50%;
+                transform: translateY(-50%);
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2310B6AD' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18' /%3E%3C/svg%3E");
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .architecture-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .architecture-card::after {
+                content: '';
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2310B6AD' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3' /%3E%3C/svg%3E");
+                background-size: contain;
+                left: 50% !important;
+                bottom: -24px !important;
+                top: auto !important;
+                transform: translateX(-50%) !important;
+                z-index: 5;
+            }
+
+            .architecture-card:last-child::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Dashboard Showcase Cards (Chapter 6) */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-teal);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .dashboard-card::before {
+            content: "Click to preview";
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .dashboard-card:hover::before {
+            opacity: 1;
+        }
+
+        .dashboard-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .dashboard-icon {
+            width: 48px;
+            height: 48px;
+            background: #f8fafc;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .dashboard-info .dash-title {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .dashboard-info .dash-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .dash-bullets {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .dash-bullets li {
+            position: relative;
+            padding-left: 20px;
+            font-size: 14px;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        .dash-bullets li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 6px;
+            height: 6px;
+            background: var(--accent-teal);
+            border-radius: 50%;
+        }
+
+        /* Modal Transitions */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 12px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+            background: white;
+            padding: 8px;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.1);
+        }
+
+        /* Timeline & CSM Enhancements */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .timeline-header {
+            display: grid;
+            grid-template-columns: 160px 1fr 1fr;
+            gap: 24px;
+            padding: 0 0 12px 0;
+            border-bottom: 2px solid #f1f5f9;
+            margin-bottom: 8px;
+        }
+
+        .timeline-header-cell {
+            font-size: 16px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-main);
+            padding-bottom: 8px;
+        }
+
+        .timeline-header-cell:last-child {
+            border-bottom: 4px solid var(--accent-teal);
+            color: var(--accent-teal);
+        }
+
+        .timeline-row {
+            display: grid;
+            grid-template-columns: 160px 1fr 1fr;
+            gap: 24px;
+        }
+
+        .timeline-label {
+            font-weight: 800;
+            font-family: 'Fraunces', serif;
+            font-size: 18px;
+            padding: 20px 0;
+            color: var(--text-main);
+            word-wrap: break-word;
+            white-space: normal;
+        }
+
+        .timeline-before,
+        .timeline-after {
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .timeline-before {
+            background: #fff5f5;
+            border: 1px solid #fee2e2;
+            color: #991b1b;
+            display: flex;
+            gap: 8px;
+        }
+
+        .timeline-before::before {
+            content: '✗';
+            font-weight: 700;
+            color: #ef4444;
+        }
+
+        .timeline-after {
+            background: #f0fdf4;
+            border: 1px solid #dcfce7;
+            color: #065f46;
+            font-weight: 600;
+            display: flex;
+            gap: 8px;
+        }
+
+        .timeline-after::before {
+            content: '✓';
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        /* CSM Model (Stepper Design) */
+        .csm-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            margin-top: 40px;
+        }
+
+        .csm-steps {
+            display: grid;
+            gap: 0;
+        }
+
+        .csm-step {
+            display: flex;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .csm-step:last-child {
+            border-bottom: none;
+        }
+
+        .csm-step-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .csm-step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-teal);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            margin-top: 0;
+            flex-shrink: 0;
+        }
+
+        .csm-step-line {
+            width: 2px;
+            flex: 1;
+            border-left: 2px dashed #e2e8f0;
+            margin-top: 8px;
+            min-height: 24px;
+        }
+
+        .csm-step:last-child .csm-step-line {
+            display: none;
+        }
+
+        .csm-step-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .csm-step-body {
+            font-size: 15px;
+            font-weight: 500;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        .csm-outcomes {
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            position: relative;
+        }
+
+        .csm-outcomes-title {
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .outcome-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            margin: 0 -16px;
+            border-bottom: 1px solid #f1f5f9;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .outcome-row:hover {
+            background: var(--accent-teal-light);
+            border-left: 3px solid var(--accent-teal);
+        }
+
+        .outcome-row:last-child {
+            border-bottom: none;
+        }
+
+        .outcome-label {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .outcome-val {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--accent-teal);
+            letter-spacing: -0.02em;
+        }
+
+        @media (max-width: 1024px) {
+            .csm-grid {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .csm-outcomes {
+                max-width: 100%;
+            }
+        }
+
+        /* Target Customer Profile Unified Layout */
+        .profile-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .profile-column {
+            padding: 40px;
+            position: relative;
+        }
+
+        .profile-column:first-child {
+            border-right: 1px solid var(--border-color);
+        }
+
+        .profile-chip {
+            display: inline-block;
+            background: var(--accent-teal-light);
+            color: var(--accent-teal);
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            letter-spacing: 0.05em;
+        }
+
+        @media (max-width: 768px) {
+            .profile-card {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-column:first-child {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+        }
+
+        /* Delivery Roadmap Horizontal Grid */
+        .roadmap-card {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            padding: 0;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            margin-top: 40px;
+        }
+
+        .roadmap-step {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 28px 24px;
+            background: white;
+            border: 1px solid var(--border-color);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .roadmap-step:first-child { 
+            border-radius: 12px 0 0 12px; 
+        }
+        
+        .roadmap-step:last-child { 
+            border-radius: 0 12px 12px 0; 
+        }
+
+        /* Border overlapping fix */
+        .roadmap-step:not(:first-child) {
+            margin-left: -1px;
+        }
+
+        .roadmap-step:hover {
+            z-index: 10;
+            border-color: var(--accent-teal);
+            box-shadow: 0 12px 32px rgba(16, 182, 173, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .roadmap-left {
+            width: auto;
+            text-align: left;
+            padding-top: 0;
+        }
+
+        .roadmap-phase {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--accent-teal);
+            background: rgba(16, 182, 173, 0.05);
+            padding: 4px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .roadmap-time {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 600;
+            display: block;
+        }
+
+        .roadmap-center {
+            display: none;
+        }
+
+        .roadmap-right {
+            flex: 1;
+        }
+
+        .roadmap-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .roadmap-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .roadmap-list li {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+            position: relative;
+            padding-left: 14px;
+        }
+
+        .roadmap-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 4px;
+            height: 4px;
+            background: #cbd5e1;
+            border-radius: 50%;
+        }
+
+        @media (max-width: 640px) {
+            .roadmap-step {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .roadmap-left {
+                width: auto;
+                text-align: left;
+            }
+
+            .roadmap-center {
+                display: none;
+            }
+
+            .roadmap-right {
+                padding-bottom: 32px;
+                padding-left: 12px;
+                border-left: 2px solid #f1f5f9;
+            }
+
+            .roadmap-step:last-child .roadmap-right {
+                border-left: none;
+            }
+        }
+
+        /* Accent Cards */
+
+        /* Not Grid / What Finfully is NOT */
+        .not-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .not-card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            transition: var(--transition);
+        }
+
+        .not-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 1024px) {
+            .not-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .not-card.full-width {
+                grid-column: span 1;
+            }
+        }
+
+        .not-icon {
+            font-size: 24px;
+            color: #ef4444;
+            flex-shrink: 0;
+            margin-top: -2px;
+        }
+
+        .not-card-content h4 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .not-card-content p {
+            font-size: 15px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* Industry Use Cases Grid */
+        .industry-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        @media (max-width: 1200px) {
+            .industry-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .industry-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 24px;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .industry-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+            border-color: var(--accent-teal);
+        }
+
+        .industry-icon {
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+
+        .industry-card h4 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .industry-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .industry-list li {
+            font-size: 15px;
+            color: var(--text-muted);
+            position: relative;
+            padding-left: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .industry-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 4px;
+            height: 2px;
+            background: var(--accent-teal);
+            border-radius: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .industry-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .closing-box {
+            background-color: white;
+            padding: 80px 40px;
+            border-radius: 32px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 40px 100px rgba(16, 182, 173, 0.08);
+            border: 2px solid var(--accent-teal);
+            background: linear-gradient(to bottom right, #ffffff, #f7fffe);
+            margin: 80px auto 40px;
+            max-width: 680px;
+            overflow: hidden;
+        }
+
+        .closing-box::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 24px;
+            font-family: 'Fraunces', serif;
+            font-size: 140px;
+            color: var(--accent-teal);
+            opacity: 0.08;
+            line-height: 1;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .closing-box h2 {
+            font-size: clamp(32px, 4vw, 48px);
+            margin-bottom: 24px;
+            color: var(--text-main);
+            position: relative;
+            z-index: 2;
+        }
+
+        .closing-box p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            color: #4b5563;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .closing-emphasis {
+            display: block;
+            margin-top: 32px;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent-teal);
+            font-family: 'Fraunces', serif;
+            position: relative;
+            z-index: 2;
+            margin-bottom: 32px;
+            letter-spacing: -0.01em;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #111827;
+            /* Very dark blue-black */
+            color: white;
+            padding: 16px 36px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 17px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-button:hover {
+            background: #000000;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        /* Responsive Navbar */
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 0 24px;
+                height: 70px;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                height: auto;
+                padding: 24px;
+                gap: 0;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: var(--transition);
+            }
+
+            .nav-menu.mobile-active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .nav-item {
+                width: 100%;
+                display: block;
+                height: auto;
+            }
+
+            .nav-link {
+                padding: 12px;
+                font-size: 16px;
+                justify-content: space-between;
+            }
+
+            .dropdown {
+                position: static;
+                transform: none;
+                opacity: 1;
+                visibility: visible;
+                box-shadow: none;
+                border: none;
+                border-radius: 0;
+                padding: 0 0 0 24px;
+                min-width: 0;
+                display: none;
+                transition: none;
+            }
+
+            .nav-item.mobile-expand .dropdown {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .main {
+                padding-top: 70px;
+            }
+
+            .content-container {
+                padding: 24px 20px;
+            }
+
+            .hero-grid,
+            .grid-2,
+            .grid-3,
+            .grid-4,
+            .step-container {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-header {
+                display: none;
+            }
+
+            .timeline-row {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                border: 1px solid var(--border-color);
+                padding: 20px;
+                border-radius: 16px;
+                background: white;
+                margin-bottom: 24px;
+            }
+
+            .timeline-label {
+                padding: 0;
+                font-size: 20px;
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 8px;
+            }
+
+            .hero-title {
+                font-size: 28px;
+                white-space: normal;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-page);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d1cfc9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout">
+        <!-- New Top Navbar -->
+        <nav class="navbar">
+            <a href="#" class="navbar-brand">
+                <div class="brand-logo">
+                    <img src="assets/logo.png" alt="Finfully Logo">
+                </div>
+                <div class="brand-name">Finfully</div>
+            </a>
+
+            <button class="menu-toggle" id="mobile-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <div class="nav-link active">Introduction <svg class="chevron" width="10" height="6"
+                            viewBox="0 0 10 6" fill="none">
+                            <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg></div>
+                    <div class="dropdown">
+                        <div class="dropdown-title">Get Started</div>
+                        <div class="dropdown-grid">
+                            <a href="#about-finfully" class="dropdown-item"><span class="dropdown-icon">♔</span> About
+                                Finfully</a>
+                            <a href="#growth-chain" class="dropdown-item"><span class="dropdown-icon">⛓</span> The
+                                Growth Chain</a>
+                            <a href="#what-not" class="dropdown-item"><span class="dropdown-icon">▤</span> What we are
+                                NOT</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <div class="nav-link">Analysis <svg class="chevron" width="10" height="6" viewBox="0 0 10 6"
+                            fill="none">
+                            <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg></div>
+                    <div class="dropdown">
+                        <div class="dropdown-title">The Foundation</div>
+                        <div class="dropdown-grid">
+                            <a href="#problems" class="dropdown-item"><span class="dropdown-icon">⌬</span> The Problems</a>
+                            <a href="#what-building" class="dropdown-item"><span class="dropdown-icon">▣</span> What We Build</a>
+                            <a href="#architecture" class="dropdown-item"><span class="dropdown-icon">⚙</span> Architecture</a>
+                            <a href="#dashboards" class="dropdown-item"><span class="dropdown-icon">◫</span> Visual Dashboards</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <div class="nav-link">Capabilities <svg class="chevron" width="10" height="6" viewBox="0 0 10 6"
+                            fill="none">
+                            <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg></div>
+                    <div class="dropdown">
+                        <div class="dropdown-title">Our Edge</div>
+                        <div class="dropdown-grid">
+                            <a href="#differentiators" class="dropdown-item"><span class="dropdown-icon">≣</span>
+                                Differentiators</a>
+                            <a href="#why-us" class="dropdown-item"><span class="dropdown-icon">★</span> Why
+                                Finfully</a>
+                            <a href="#pain-points" class="dropdown-item"><span class="dropdown-icon">☑</span> Solving
+                                Pain Points</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <div class="nav-link">Outcomes <svg class="chevron" width="10" height="6" viewBox="0 0 10 6"
+                            fill="none">
+                            <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg></div>
+                    <div class="dropdown">
+                        <div class="dropdown-title">Results & Model</div>
+                        <div class="dropdown-grid">
+                            <a href="#life-after" class="dropdown-item"><span class="dropdown-icon">⇢</span> Life After
+                                Finfully</a>
+                            <a href="#csm-model" class="dropdown-item"><span class="dropdown-icon">⚑</span> The CSM
+                                Model</a>
+                            <a href="#industry" class="dropdown-item"><span class="dropdown-icon">▦</span> Use Cases</a>
+                            <a href="#outcomes" class="dropdown-item"><span class="dropdown-icon">✦</span>
+                                Transformations</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <div class="nav-link">Execution <svg class="chevron" width="10" height="6" viewBox="0 0 10 6"
+                            fill="none">
+                            <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg></div>
+                    <div class="dropdown">
+                        <div class="dropdown-title">Getting It Done</div>
+                        <div class="dropdown-grid">
+                            <a href="#customer-profile" class="dropdown-item"><span class="dropdown-icon">✎</span> Ideal
+                                Profile</a>
+                            <a href="#delivery" class="dropdown-item"><span class="dropdown-icon">⍿</span> Engagement
+                                Model</a>
+                            <a href="#final-promise" class="dropdown-item"><span class="dropdown-icon">✦</span> Our
+                                Promise</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main">
+
+            <div class="content-container">
+
+                <!-- Introduction Group -->
+                <div id="group-introduction" class="content-group active">
+                    <!-- Hero Section -->
+                    <section id="about-finfully" class="hero-section reveal">
+                        <h1 class="hero-title">Finfully is a Financial Decision & Action System for growing businesses
+                        </h1>
+
+                        <div class="hero-grid">
+                            <div class="hero-card">
+                                <ul style="list-style: none; margin-bottom: 24px;">
+                                    <li style="margin-bottom: 12px; font-size: 18px; font-weight: 700; color: #1a1a1a;">
+                                        Not a dashboard.</li>
+                                    <li style="margin-bottom: 12px; font-size: 18px; font-weight: 700; color: #1a1a1a;">
+                                        Not MIS report.</li>
+                                    <li style="margin-bottom: 12px; font-size: 18px; font-weight: 700; color: #1a1a1a;">
+                                        Not advisory.</li>
+                                </ul>
+                                <p>We're the external brain your finance function never had. Your ERP tells you what happened. <span
+                                        style="color: var(--accent-teal); font-weight: 600;">Finfully tells you what to
+                                        do next — and ensures it gets followed through.</span></p>
+                            </div>
+                            <div class="hero-card">
+                                <span class="card-heading">We know:</span>
+                                <ul style="list-style: none;">
+                                    <li style="margin-bottom: 12px; padding-left: 20px; position: relative;"><span
+                                            style="position: absolute; left: 0; color: var(--accent-teal);">→</span>Your data is scattered across Accounting Software, and Excel.</li>
+                                    <li style="margin-bottom: 12px; padding-left: 20px; position: relative;"><span
+                                            style="position: absolute; left: 0; color: var(--accent-teal);">→</span>You're rich in revenue but poor in cash and Margin visibility.</li>
+                                    <li style="margin-bottom: 12px; padding-left: 20px; position: relative;"><span
+                                            style="position: absolute; left: 0; color: var(--accent-teal);">→</span>You want clarity, not complexity.</li>
+                                    <li style="margin-bottom: 12px; padding-left: 20px; position: relative;"><span
+                                            style="position: absolute; left: 0; color: var(--accent-teal);">→</span>You need someone who reminds you, remembers to follow up on what matters.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border-color);">
+                            <p
+                                style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px; font-weight: 600; letter-spacing: 0.02em;">
+                                Finfully acts as a business intelligence partner for business owners and founders,
+                                helping
+                                them get control over:</p>
+                            <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-start;">
+                                <span class="chapter-chip" style="background: white; border: 1px solid rgba(16, 182, 173, 0.15); box-shadow: 0 2px 8px rgba(16, 182, 173, 0.05);">Revenue quality</span>
+                                <span class="chapter-chip" style="background: white; border: 1px solid rgba(16, 182, 173, 0.15); box-shadow: 0 2px 8px rgba(16, 182, 173, 0.05);">Margins</span>
+                                <span class="chapter-chip" style="background: white; border: 1px solid rgba(16, 182, 173, 0.15); box-shadow: 0 2px 8px rgba(16, 182, 173, 0.05);">Inventory</span>
+                                <span class="chapter-chip" style="background: white; border: 1px solid rgba(16, 182, 173, 0.15); box-shadow: 0 2px 8px rgba(16, 182, 173, 0.05);">Working capital</span>
+                                <span class="chapter-chip" style="background: white; border: 1px solid rgba(16, 182, 173, 0.15); box-shadow: 0 2px 8px rgba(16, 182, 173, 0.05);">Hidden cost leakages</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Growth Chain -->
+                    <section id="growth-chain" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span> THE
+                                FINFULLY GROWTH CHAIN (CHAPTER 1)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">Visibility compounds into GROWTH</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">Our mission: Turn your financial data into unstoppable business momentum. From intuition-led to insight-led.</p>
+                        </div>
+
+                        <div class="step-container">
+                            <div class="step-item">
+                                <span class="step-label">Step 01</span>
+                                <div class="step-icon">👁️</div>
+                                <h4 class="step-title">Visibility</h4>
+                                <p class="step-description">Finfully creates one real-time view across cash, margins, receivables, and inventory. No more month-end waits for fragmented data.</p>
+                            </div>
+                            <div class="step-item">
+                                <span class="step-label">Step 02</span>
+                                <div class="step-icon">🔍</div>
+                                <h4 class="step-title">Clarity</h4>
+                                <p class="step-description">Identify exactly where money is stuck, where margins are leaking, and what needs action. Firefighting reduces as insight takes over.</p>
+                            </div>
+                            <div class="step-item">
+                                <span class="step-label">Step 03</span>
+                                <div class="step-icon">⚖️</div>
+                                <h4 class="step-title">Stability</h4>
+                                <p class="step-description">Teams stop reacting late and start acting early. Confidence builds as cash gaps and cost spikes are handled proactively.</p>
+                            </div>
+                            <div class="step-item">
+                                <span class="step-label">Step 04</span>
+                                <div class="step-icon">📈</div>
+                                <h4 class="step-title">Growth</h4>
+                                <p class="step-description">When you can see clearly and act early, growth gets easier. Stability creates the confidence to scale faster and smarter.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- What we are NOT -->
+                    <section id="what-not" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span> CLARITY
+                                OF PURPOSE (Chapter 2)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">What Finfully is NOT</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">Being honest about what we don't do is
+                                how we stay focused on what we do well.</p>
+                        </div>
+
+                        <div class="not-grid">
+                            <div class="not-card">
+                                <div class="not-icon">🚫</div>
+                                <div class="not-card-content">
+                                    <h4>Not an Accounting Software</h4>
+                                    <p>We don't replace Tally, Zoho, or your ERP. Your existing system remains your system of record; we sit above it.</p>
+                                </div>
+                            </div>
+                            <div class="not-card">
+                                <div class="not-icon">🚫</div>
+                                <div class="not-card-content">
+                                    <h4>Not a Bookkeeping or Compliance Service</h4>
+                                    <p>We don't focus on filings or data entry. We focus on decisions, business performance, and action items.</p>
+                                </div>
+                            </div>
+                            <div class="not-card">
+                                <div class="not-icon">🚫</div>
+                                <div class="not-card-content">
+                                    <h4>Not a Static MIS or Dashboard Tool</h4>
+                                    <p>We don't just show reports. We interpret, prioritize, and drive action until the open items are closed.</p>
+                                </div>
+                            </div>
+                            <div class="not-card">
+                                <div class="not-icon">🚫</div>
+                                <div class="not-card-content">
+                                    <h4>Not a Consulting Deck</h4>
+                                    <p>We don't give one-time advice. We stay with you, ensuring execution and weekly follow-ups with your team.</p>
+                                </div>
+                            </div>
+                            <div class="not-card full-width">
+                                <div class="not-icon">🚫</div>
+                                <div class="not-card-content">
+                                    <h4>Not a Tool You Need to Keep Opening</h4>
+                                    <p>You don't have to log in daily. Finfully comes to you via alerts, summaries, and nudges on WhatsApp and email.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- The Problems -->
+                <div id="group-analysis" class="content-group">
+                    <!-- The Problems -->
+                    <section id="problems" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span> THE
+                                ANALYSIS (Chapter 3)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">The Problems We Aim to Solve</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">Identifying the structural bottlenecks
+                                that keep businesses from scaling reliably.</p>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Problem</th>
+                                        <th>Reality / paradox</th>
+                                        <th>Why it happens</th>
+                                        <th>The cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                         <td><strong>Profit is visible. Cash reality is not.</strong></td>
+                                         <td>The Paradox: Your P&L says you made ₹20 Cr profit. Your bank balance says ₹50 Lakhs. Both are true. Both are terrifying.</td>
+                                         <td>Revenue is booked, but 60% of customers take 90 days to pay. ₹30 Cr of inventory is stuck at "good prices." Expenses are scattered and untracked.</td>
+                                         <td style="color: #ef4444; font-weight: 500;">You're doing business in the dark. Saying yes to big orders that drain cash. Paying for inventory you don't need. Missing the obvious cost-saving opportunity hiding in your data.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>Data is available. Decisions are missing.</strong></td>
+                                         <td>The Reality: You have years of transaction data and thousands of rows in Excel, but you still have to dig through files or wait for late reports.</td>
+                                         <td>Data is fragmented. Finance teams are busy keeping the lights on (compliance, payroll) and don't have time to analyze trends or spot opportunities.</td>
+                                         <td style="color: #ef4444; font-weight: 500;">Decisions get delayed. Gut feel takes over. Risks get missed until they become crises. You can't scale because you can't see what's happening at speed.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>Hidden leakages drain cash silently.</strong></td>
+                                         <td>The Scenario: Your business "looks healthy" on paper, but money is leaking through dead inventory, slow-paying customers, and unprofitable products.</td>
+                                         <td>Balance sheets don't flag dead stock. P&Ls don't show margin-killer customers. Traditional reports don't explain why COGS suddenly jumped.</td>
+                                         <td style="color: #ef4444; font-weight: 500;">Cash crunches feel random. You scramble for short-term funding and cut costs arbitrarily instead of surgically. Growth feels risky because you can't trust your numbers.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>Teams don't act on information.</strong></td>
+                                         <td>The Trap: You get a report on receivables, but nobody follows up, calls the customer, or owns the accountability. The report stays in an inbox.</td>
+                                         <td>Alerts feel like noise. Recommendations are generic ("improve collections") rather than specific ("call Customer X today about the ₹15 Lakh invoice").</td>
+                                         <td style="color: #ef4444; font-weight: 500;">Cash collection slips. Inventory moves slowly. Margin erosion goes unnoticed. Nothing changes because nobody owns the follow-up.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>You're managing with last month's numbers.</strong></td>
+                                         <td>The Reality: Your finance team closes books on the 10th. By the time you see September results, it's October 15th. You're always Reacting, not Leading.</td>
+                                         <td>Customer payments slip, vendor pricing spikes, and inventory changes — but you won't know for another month.</td>
+                                         <td style="color: #ef4444; font-weight: 500;">You're always behind the curve, missing the moment when corrective action would be cheapest.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>Founder fire-fighting bandwidth.</strong></td>
+                                         <td>The Reality: The founder remains the final approval layer for collections, purchases, pricing, and priorities. The finance team is execution-heavy, not decision-oriented.</td>
+                                         <td>There is no CFO-level thinking inside. Delegation is weak because decisions depend on founder judgment. Trust in systems is low.</td>
+                                         <td style="color: #ef4444; font-weight: 500;">The founder becomes the bottleneck. Decisions slow down. Opportunities are missed and the business behaves like a much smaller company.</td>
+                                     </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- What We Are Building -->
+                    <section id="what-building" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span> SYSTEM
+                                VISION (Chapter 4)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">What We Are Building</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">Continuous, near real-time actionable
+                                business intelligence that actually gets acted on.</p>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>System component</th>
+                                        <th>What it does</th>
+                                        <th>What you actually get</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                     <tr>
+                                         <td><strong>Data Ingestion</strong></td>
+                                         <td>Pulls data from Tally / Zoho, ERPs, bank feeds, accounting software, invoices, and purchase orders.</td>
+                                         <td>Key promise: No rip-and-replace. Your current system stays as your system of record while Finfully sits on top.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>AI Processing Engine</strong></td>
+                                         <td>Cleans and categorizes transactions, detects anomalies, and calculates key metrics like CCC and margin by SKU.</td>
+                                         <td>Smart alerts that spotlight risks: "Vendor X's prices spiked 15%" or "This inventory has zero movement in 6 months."</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>Action Delivery Layer</strong></td>
+                                         <td>Insights delivered via WhatsApp, email, and in-app notifications — role-based and direct.</td>
+                                         <td>Specific recommendations: "You need to collect ₹25 Lakhs by Friday to cover the payable to Vendor X."</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>CSM Follow-Through</strong></td>
+                                         <td>Every customer gets a dedicated CSM who translates insights into execution and tracks closure.</td>
+                                         <td>Weekly rhythm of clarity. CSM calls every Monday to review last week's results and this week's action plan.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>Speed to Value</strong></td>
+                                         <td>Most businesses see actionable insights within the first 2–3 weeks of onboarding.</td>
+                                         <td>Continuous, near real-time business intelligence that ensures action actually happens.</td>
+                                     </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- New KPI Cards -->
+                        <div class="kpi-grid">
+                            <div class="kpi-card">
+                                <span class="kpi-category">Profitability</span>
+                                <div class="kpi-value">32.4%</div>
+                                <div class="kpi-subtitle">Gross Margin realized</div>
+                                <div class="kpi-status status-positive">
+                                    <span class="status-dot"></span>
+                                    Above benchmark (28%)
+                                </div>
+                            </div>
+                            <div class="kpi-card">
+                                <span class="kpi-category">Cash Flow</span>
+                                <div class="kpi-value">+54 days</div>
+                                <div class="kpi-subtitle">Payment Cycle Gap</div>
+                                <div class="kpi-status status-warning">
+                                    <span class="status-dot"></span>
+                                    Needs Improvement
+                                </div>
+                            </div>
+                            <div class="kpi-card">
+                                <span class="kpi-category">Growth</span>
+                                <div class="kpi-value">+12%</div>
+                                <div class="kpi-subtitle">Revenue Growth (MoM)</div>
+                                <div class="kpi-status status-positive">
+                                    <span class="status-dot"></span>
+                                    Growing
+                                </div>
+                            </div>
+                            <div class="kpi-card">
+                                <span class="kpi-category">Liquidity</span>
+                                <div class="kpi-value">78</div>
+                                <div class="kpi-subtitle">Avg. Collection Days</div>
+                                <div class="kpi-status status-danger">
+                                    <span class="status-dot"></span>
+                                    Target: 60 days
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Architecture -->
+                    <section id="architecture" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span> THE
+                                ENGINE (Chapter 5)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">How It Works – The Architecture</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">The structural flow from data points
+                                to business decisions.</p>
+                        </div>
+
+                        <div class="architecture-grid">
+                            <div class="architecture-card accent-teal-top">
+                                <span class="step-label">Step 01</span>
+                                <h4 class="step-title">ERP-Agnostic Ingestion</h4>
+                                <p class="step-description">Connects to Tally, Zoho, or your current ERP. Real-time sync ensures your system of record stays untouched while Finfully adds the intelligence layer.</p>
+                            </div>
+                            <div class="architecture-card accent-blue-top">
+                                <span class="step-label">Step 02</span>
+                                <h4 class="step-title">Quiet AI Processing</h4>
+                                <p class="step-description">Automatically cleans data, flags anomalies like vendor price spikes (e.g. 15%), and identifies margin opportunities tailored to your business behavior.</p>
+                            </div>
+                            <div class="architecture-card accent-orange-top">
+                                <span class="step-label">Step 03</span>
+                                <h4 class="step-title">Proactive Alert Engine</h4>
+                                <p class="step-description">Sends specific, direct prompts via WhatsApp and Email. Example: "You need to collect ₹25 Lakhs by Friday to cover Vendor X."</p>
+                            </div>
+
+                            <div class="architecture-card accent-blue-top">
+                                <span class="step-label">Step 04</span>
+                                <h4 class="step-title">Decision Packets</h4>
+                                <p class="step-description">Provides pattern-based guidance: "Call these 5 customers to release ₹50 Lakhs." We don't just flag issues; we recommend actions.</p>
+                            </div>
+                            <div class="architecture-card accent-teal-top">
+                                <span class="step-label">Step 05</span>
+                                <h4 class="step-title">CSM Follow-Up (USP)</h4>
+                                <p class="step-description">Your dedicated partner reviews open alerts weekly, translates insights into execution, and ensures the action items actually get closed.</p>
+                            </div>
+                            <div class="architecture-card accent-orange-top">
+                                <span class="step-label">Step 06</span>
+                                <h4 class="step-title">Rhythm of Action</h4>
+                                <p class="step-description">Continuous visibility turns financial chaos into a weekly operating rhythm. Stability builds, and growth becomes predictable.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Dashboards -->
+                    <section id="dashboards" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span> VISUAL
+                                INTELLIGENCE (Chapter 6)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">What You Actually See</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">Finfully organizes your business into
+                                decision-focused views, not just charts.</p>
+                        </div>
+
+                        <div class="dashboard-grid">
+                            <!-- 1. CEO Arena -->
+                            <div class="dashboard-card" onclick="openModal('assets/dash1.png')">
+                                <div class="dashboard-card-header">
+                                    <div class="dashboard-icon">👑</div>
+                                    <div class="dashboard-info">
+                                        <div class="dash-title">CEO’s Arena</div>
+                                        <div class="dash-subtitle">“What needs my attention right now?”</div>
+                                    </div>
+                                </div>
+                                <ul class="dash-bullets">
+                                    <li>Overall business status (Strong / Watch / Critical)</li>
+                                    <li>Top 3–5 risks across cash, margins, and operations</li>
+                                    <li>Key focus areas and priorities for the week</li>
+                                </ul>
+                            </div>
+
+                            <!-- 2. Health Check -->
+                            <div class="dashboard-card" onclick="openModal('assets/dash2.png')">
+                                <div class="dashboard-card-header">
+                                    <div class="dashboard-icon">❤️</div>
+                                    <div class="dashboard-info">
+                                        <div class="dash-title">Health Check</div>
+                                        <div class="dash-subtitle">“Is the business stable?”</div>
+                                    </div>
+                                </div>
+                                <ul class="dash-bullets">
+                                    <li>Available cash and short-term liquidity runway</li>
+                                    <li>Net operating cash flow trends and stress signals</li>
+                                    <li>Early warning indicators for survival and strength</li>
+                                </ul>
+                            </div>
+
+                            <!-- 3. Revenue Engine -->
+                            <div class="dashboard-card" onclick="openModal('assets/dash3.png')">
+                                <div class="dashboard-card-header">
+                                    <div class="dashboard-icon">📊</div>
+                                    <div class="dashboard-info">
+                                        <div class="dash-title">Revenue Engine</div>
+                                        <div class="dash-subtitle">“Is our revenue actually profitable?”</div>
+                                    </div>
+                                </div>
+                                <ul class="dash-bullets">
+                                    <li>Revenue vs collections and funnel drop-offs</li>
+                                    <li>Customer-wise and channel-wise performance</li>
+                                    <li>Focus on the right revenue, not just more revenue</li>
+                                </ul>
+                            </div>
+
+                            <!-- 4. Inventory -->
+                            <div class="dashboard-card" onclick="openModal('assets/dash4.png')">
+                                <div class="dashboard-card-header">
+                                    <div class="dashboard-icon">📦</div>
+                                    <div class="dashboard-info">
+                                        <div class="dash-title">Inventory Aging</div>
+                                        <div class="dash-subtitle">“Where is capital blocked?”</div>
+                                    </div>
+                                </div>
+                                <ul class="dash-bullets">
+                                    <li>Inventory aging (slow-moving / dead stock)</li>
+                                    <li>Stock days and turnover intelligence</li>
+                                    <li>Liquidation recommendations for idle inventory</li>
+                                </ul>
+                            </div>
+
+                                                            <!-- 5. Working Capital -->
+                            <div class="dashboard-card" onclick="openModal('assets/dash5.png')">
+                                <div class="dashboard-card-header">
+                                    <div class="dashboard-icon">⏳</div>
+                                    <div class="dashboard-info">
+                                        <div class="dash-title">Working Capital</div>
+                                        <div class="dash-subtitle">“Where is money stuck?”</div>
+                                    </div>
+                                </div>
+                                <ul class="dash-bullets">
+                                    <li>Receivable and Payable aging vs turnover</li>
+                                    <li>Cash conversion cycle (CCC) trends at a glance</li>
+                                    <li>Priority collection list for immediate cash release</li>
+                                </ul>
+                            </div>
+
+                            <!-- 6. Sales Funnel -->
+                            <div class="dashboard-card" onclick="openModal('assets/dash6.png')">
+                                <div class="dashboard-card-header">
+                                    <div class="dashboard-icon">🌪️</div>
+                                    <div class="dashboard-info">
+                                        <div class="dash-title">Sales Funnel</div>
+                                        <div class="dash-subtitle">Predictable growth steering</div>
+                                    </div>
+                                </div>
+                                <ul class="dash-bullets">
+                                    <li>Pipeline velocity and conversion gaps</li>
+                                    <li>High-revenue but low-margin segment detection</li>
+                                    <li>Role-based visibility: Owner, Finance, and Sales</li>
+                                </ul>
+                            </div>
+
+                            <!-- 7. MIS & Trends -->
+                            <div class="dashboard-card" onclick="openModal('assets/dash7.png')">
+                                <div class="dashboard-card-header">
+                                    <div class="dashboard-icon">💰</div>
+                                    <div class="dashboard-info">
+                                        <div class="dash-title">Cost & Margin</div>
+                                        <div class="dash-subtitle">“Where are we losing money?”</div>
+                                    </div>
+                                </div>
+                                <ul class="dash-bullets">
+                                    <li>Margin by product, customer, and time period</li>
+                                    <li>Discount leakage and price realization gaps</li>
+                                    <li>Abnormal expense trends and cost vs revenue movement</li>
+                                </ul>
+                            </div>
+
+                            <!-- 8. Actionables -->
+                            <div class="dashboard-card" onclick="openModal('assets/dash8.png')">
+                                <div class="dashboard-card-header">
+                                    <div class="dashboard-icon">✅</div>
+                                    <div class="dashboard-info">
+                                        <div class="dash-title">Actionables</div>
+                                        <div class="dash-subtitle">“What needs my team's attention?”</div>
+                                    </div>
+                                </div>
+                                <ul class="dash-bullets">
+                                    <li>Open tasks assigned with clear data-backed evidence</li>
+                                    <li>Closure tracking with historical resolution timelines</li>
+                                    <li>Accountability layer between reports and results</li>
+                                </ul>
+                            </div>
+
+                            <!-- 9. Alerts -->
+                            <div class="dashboard-card" onclick="openModal('assets/dash9.png')">
+                                <div class="dashboard-card-header">
+                                    <div class="dashboard-icon">🔔</div>
+                                    <div class="dashboard-info">
+                                        <div class="dash-title">Alerts</div>
+                                        <div class="dash-subtitle">Real-time exceptions & flags</div>
+                                    </div>
+                                </div>
+                                <ul class="dash-bullets">
+                                    <li>Immediate triggers for high-risk customer defaults</li>
+                                    <li>Margin drift alerts and over-spending notifications</li>
+                                    <li>Anomaly detection across inventory and expenses</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Capabilities Group -->
+                <div id="group-capabilities" class="content-group">
+                    <!-- Differentiators -->
+                    <section id="differentiators" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span> THE EDGE
+                                (Chapter 7)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">Key Differentiators</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">What makes Finfully fundamentally
+                                different from traditional and modern MIS tools.</p>
+                        </div>
+
+                        <div class="grid-3">
+                            <div class="card accent-teal-top">
+                                <h4 class="fraunces">Near Real-Time Reality</h4>
+                                <p>Most businesses see numbers on the 10th of next month. Finfully shows your latest reality today — available cash, collections, and margin impact while the window is still open.</p>
+                            </div>
+                            <div class="card accent-blue-top">
+                                <h4 class="fraunces">Exception-Based Intelligence</h4>
+                                <p>Not another dashboard. We surface only what's abnormal. Instead of showing 50 metrics, we tell you what matters, what it costs, and precisely what to do.</p>
+                            </div>
+                            <div class="card accent-orange-top">
+                                <h4 class="fraunces">ERP-Agnostic Setup</h4>
+                                <p>Your Accounting Software, data, and team stay. Zero disruption, no re-training, and no vendor lock-in. We integrate with your existing setup in days, not months.</p>
+                            </div>
+                            <div class="card accent-orange-top">
+                                <h4 class="fraunces">Founder-Friendly Tone</h4>
+                                <p>We're founders who've felt the 2 AM anxiety about payroll and cash. We speak your language and understand the real pressures of scaling a business.</p>
+                            </div>
+                            <div class="card accent-teal-top">
+                                <h4 class="fraunces">AI + Human Partnership</h4>
+                                <p>AI handles the relentless monitoring and catches patterns you'd miss. Your dedicated CSM handles the interpretation, ensuring you move faster with less risk.</p>
+                            </div>
+                            <div class="card accent-blue-top">
+                                <h4 class="fraunces">Multi-Channel Delivery</h4>
+                                <p>Alerts come where you are: WhatsApp, Email, and Mobile app. No new tool to learn; Finfully meets you where you already work every day.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Why Us -->
+                    <section id="why-us" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span>
+                                STRATEGIC VALUE (Chapter 8)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">Why Finfully</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">Most solutions stop at visibility.
+                                Finfully goes from Data → Insight → Decision → Action.</p>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Why Finfully</th>
+                                        <th>What that means in practice</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                     <tr>
+                                         <td><strong>Data comes to you</strong></td>
+                                         <td>Your team shouldn't log into five systems to reconcile numbers. Finfully surfaces issues proactively through alerts and summaries.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>Guided Interpretation</strong></td>
+                                         <td>A dashboard shows a drop in margin; Finfully explains if it's discount leakage, product mix, or vendor pricing spikes.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>Dedicated Follow-Through</strong></td>
+                                         <td>Alerts without accountability become noise. Our CSM model ensures open issues are reviewed, acted upon, and tracked to closure.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>Team Upleveling</strong></td>
+                                         <td>Works with your existing team. It adds decision support without adding operational complexity or requiring new specialist hires.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>No Implementation Burden</strong></td>
+                                         <td>Your existing accounting software remains. Finfully sits on top and starts generating value without forcing disruption.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>Continuous Steering</strong></td>
+                                         <td>Move from backward-looking monthly reviews to an always-on steering system that tracks risks and execution gaps daily.</td>
+                                     </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Pain Points -->
+                    <section id="pain-points" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span> PROBLEM
+                                SOLVING (Chapter 9)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">Solving the Pain Points</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">Addressing the core friction points in
+                                financial decision making.</p>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Pain point</th>
+                                        <th>How Finfully solves it</th>
+                                        <th>Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                     <tr>
+                                         <td><strong>Hidden Leakages</strong></td>
+                                         <td>Inventory aging, customer profitability matrix, and cost category trends trigger immediate liquidation or renegotiation alerts.</td>
+                                         <td>Leakages get plugged within weeks, unlocking capital and protecting margins.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>Scattered Data</strong></td>
+                                         <td>Centralizes data from all sources into a single source of truth with near real-time visibility for owners, finance, and sales.</td>
+                                         <td>Decision-making shifts from guesswork to fact-based evidence in weeks.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>Delayed Action</strong></td>
+                                         <td>Mandatory escalation and weekly Monday checkpoints ensure that "We should fix this" actually becomes "We DID fix this."</td>
+                                         <td>Open items close, recommendations are executed, and business momentum builds.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>Revenue vs. Cash Mismatch</strong></td>
+                                         <td>Separates the two realities. Tracks CCC, overdue receivables, and forecasts exactly when you might run out of cash.</td>
+                                         <td>You stop being surprised. You stop making panicked decisions. You manage proactively.</td>
+                                     </tr>
+                                     <tr>
+                                         <td><strong>Margin Erosion</strong></td>
+                                         <td>Automatically flags discount leakage and price realization gaps against industry norms in real-time.</td>
+                                         <td>Margin issues get diagnosed and fixed within days before they compound.</td>
+                                     </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Outcomes Group -->
+                <div id="group-outcomes" class="content-group">
+                    <!-- Life After -->
+                    <section id="life-after" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span>
+                                TRANSFORMATION (Chapter 10)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">Life After Finfully</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">How the mindset and operation of a
+                                business owner changes with full visibility.</p>
+                        </div>
+
+                        <div class="timeline">
+                            <!-- Column Headers -->
+                            <div class="timeline-header">
+                                <div class="timeline-header-cell"></div>
+                                <div class="timeline-header-cell">Before Finfully</div>
+                                <div class="timeline-header-cell">After Finfully</div>
+                            </div>
+
+                            <div class="timeline-row">
+                                <div class="timeline-label">🌅 Start of the Day</div>
+                                <div class="timeline-before">Check bank balance. Feel a sense of anxiety. WhatsApp your accountant: "How much did we collect yesterday?" Wait for an unclear answer.</div>
+                                <div class="timeline-after">Check your WhatsApp: Single Finfully alert shows live cash, today’s overdue targets, and any margin anomalies from yesterday. Clarity from the first cup of coffee.</div>
+                            </div>
+                            <div class="timeline-row">
+                                <div class="timeline-label">👥 Finance Team Review</div>
+                                <div class="timeline-before">"Where are we on collections?" Meetings are vague. Teams say "We're following up." No specific rupee impact or priority.</div>
+                                <div class="timeline-after">"Why is Customer X 10 days late on a ₹2.2 Cr invoice?" The team has specific targets and owners. High-value risks are closed first.</div>
+                            </div>
+                            <div class="timeline-row">
+                                <div class="timeline-label">📈 Sales / Inventory Review</div>
+                                <div class="timeline-before">Focus on top-line revenue. Dead inventory is hidden. Discounting feels necessary to "move volume."</div>
+                                <div class="timeline-after">Identifying slow SKUs early. Realizing that ₹1 Cr of inventory has not moved in 120 days. Liquidation plans triggered surgically.</div>
+                            </div>
+                            <div class="timeline-row">
+                                <div class="timeline-label">🏢 Management Meeting</div>
+                                <div class="timeline-before">Decisions made on gut-feel. Scaling feels risky because "we don't know if we have the cash."</div>
+                                <div class="timeline-after">Decisions made on hard data. You know exactly when you’ll hit your cash ceiling and where to invest for growth.</div>
+                            </div>
+                            <div class="timeline-row">
+                                <div class="timeline-label">📅 End of the Month</div>
+                                <div class="timeline-before">Fire-fighting. Scrambling to close the books. Surprised by margin erosion or unexpected costs.</div>
+                                <div class="timeline-after">Predictability. Books close smoothly because issues were handled weekly. Growth is no longer a surprise; it's a plan.</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- CSM Model -->
+                    <section id="csm-model" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span> THE CSM
+                                Model (Chapter 11)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">Customer Success Manager Model</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">The accountability partner who ensures
+                                the system doesn't just sit in an inbox.</p>
+                        </div>
+
+                        <div class="csm-grid">
+                            <div class="csm-steps">
+                                <div class="csm-step">
+                                    <div class="csm-step-left">
+                                        <div class="csm-step-dot">1</div>
+                                        <div class="csm-step-line"></div>
+                                    </div>
+                                    <div>
+                                        <div class="csm-step-title">Identify Open Alerts & Cost of Inaction</div>
+                                        <div class="csm-step-body">Your CSM reviews every threshold breach — inventory, receivables, margins — and calculates exactly what it's costing the business today.</div>
+                                    </div>
+                                </div>
+                                <div class="csm-step">
+                                    <div class="csm-step-left">
+                                        <div class="csm-step-dot">2</div>
+                                        <div class="csm-step-line"></div>
+                                    </div>
+                                    <div>
+                                        <div class="csm-step-title">Monday Call — 30 Minutes of Clarity</div>
+                                        <div class="csm-step-body">A structured, founder-level dialogue. What changed? What is at risk this week? What are the top 3 action items?</div>
+                                    </div>
+                                </div>
+                                <div class="csm-step">
+                                    <div class="csm-step-left">
+                                        <div class="csm-step-dot">3</div>
+                                        <div class="csm-step-line"></div>
+                                    </div>
+                                    <div>
+                                        <div class="csm-step-title">Partner on Execution</div>
+                                        <div class="csm-step-body">The CSM doesn't just "report." They assist the finance team in prioritizing collections and identifying margin-saver actions.</div>
+                                    </div>
+                                </div>
+                                <div class="csm-step">
+                                    <div class="csm-step-left">
+                                        <div class="csm-step-dot">4</div>
+                                        <div class="csm-step-line"></div>
+                                    </div>
+                                    <div>
+                                        <div class="csm-step-title">Relentless Closure Tracking</div>
+                                        <div class="csm-step-body">Open items are tracked until they are officially closed. Commitments are measured against real outcomes, not promises.</div>
+                                    </div>
+                                </div>
+                                <div class="csm-step">
+                                    <div class="csm-step-left">
+                                        <div class="csm-step-dot">5</div>
+                                        <div class="csm-step-line"></div>
+                                    </div>
+                                    <div>
+                                        <div class="csm-step-title">Escalation Before Crisis</div>
+                                        <div class="csm-step-body">If a high-risk item (like a major collection) keeps getting ignored, the CSM escalates it to the owner before it hits the bank balance.</div>
+                                    </div>
+                                </div>
+                                <div class="csm-step">
+                                    <div class="csm-step-left">
+                                        <div class="csm-step-dot">6</div>
+                                    </div>
+                                    <div>
+                                        <div class="csm-step-title">Ongoing Strategy Sync</div>
+                                        <div class="csm-step-body">Monthly deep-dives move from "what happened" to "how we win next month," aligning financial reality with your growth goals.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="csm-outcomes">
+                                <div class="csm-outcomes-title">What changes when alerts actually close</div>
+                                <div class="outcome-row">
+                                    <div class="outcome-label">Receivables aging</div>
+                                    <div class="outcome-val">Reduction: 10–15 days</div>
+                                </div>
+                                <div class="outcome-row">
+                                    <div class="outcome-label">Inventory turns</div>
+                                    <div class="outcome-val">Improvement: 20–30%</div>
+                                </div>
+                                <div class="outcome-row">
+                                    <div class="outcome-label">Cash conversion cycle</div>
+                                    <div class="outcome-val">Better by 15–25 days</div>
+                                </div>
+                                <div class="outcome-row">
+                                    <div class="outcome-label">Finance team analysis time</div>
+                                    <div class="outcome-val">Rise: 20% → 60%+</div>
+                                </div>
+                                <div class="outcome-row">
+                                    <div class="outcome-label">Ad-hoc founder data requests</div>
+                                    <div class="outcome-val">Reduction: ↓ 70%</div>
+                                </div>
+                                <div class="outcome-row">
+                                    <div class="outcome-label">Cost overrun detection</div>
+                                    <div class="outcome-val">Slashed to < 2 weeks</div>
+                                </div>
+                                <div class="outcome-row">
+                                    <div class="outcome-label">Margin improvement</div>
+                                    <div class="outcome-val">1–2% once leaks plugged</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Industry -->
+                    <section id="industry" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span> FIELD
+                                RESULTS (Chapter 12)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">Industry Use Cases</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">Specific ways revenue complexity and
+                                working capital strain are unlocked.</p>
+                        </div>
+
+                        <div class="industry-grid">
+                            <div class="industry-card">
+                                <div class="industry-icon">🏪</div>
+                                <h4>Retail & Multi-Store</h4>
+                                <ul class="industry-list">
+                                    <li>Slow-moving SKU detection & Liquidation triggers.</li>
+                                    <li>Store-wise performance and margin gap analysis.</li>
+                                    <li>Identifying the Top 20% products driving 80% profit.</li>
+                                    <li>Monitoring discount leakage and promotional ROI.</li>
+                                </ul>
+                            </div>
+                            <div class="industry-card">
+                                <div class="industry-icon">🔄</div>
+                                <h4>Trading & Distribution</h4>
+                                <ul class="industry-list">
+                                    <li>Customer-wise profitability & credit control risks.</li>
+                                    <li>Real-time collection delay alerts for high-value accounts.</li>
+                                    <li>Cash cycle gap analysis to unlock working capital.</li>
+                                    <li>Identifying "Margin-Killer" customers and product segments.</li>
+                                </ul>
+                            </div>
+                            <div class="industry-card">
+                                <div class="industry-icon">🏭</div>
+                                <h4>Manufacturing</h4>
+                                <ul class="industry-list">
+                                    <li>Raw material cost spike alerts (e.g. 15% deviation).</li>
+                                    <li>Input-vs-Output mismatch and manufacturing leakage.</li>
+                                    <li>Margin gap by specific product line and batch.</li>
+                                    <li>Procurement optimization and inventory safety levels.</li>
+                                </ul>
+                            </div>
+                            <div class="industry-card">
+                                <div class="industry-icon">🚀</div>
+                                <h4>D2C / SaaS / Services</h4>
+                                <ul class="industry-list">
+                                    <li>Channel-level profitability and burn-rate visibility.</li>
+                                    <li>Cash runway visibility and growth prioritisation.</li>
+                                    <li>Cost vs Revenue mismatch detection in real-time.</li>
+                                    <li>Identifying the most efficient growth segments.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Outcomes -->
+                    <section id="outcomes" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span> BUSINESS
+                                EVOLUTION (Chapter 13)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">Outcomes & Transformations</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">The tangible shifts when the business
+                                moves from reactive to leader.</p>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Area</th>
+                                        <th>Before</th>
+                                        <th>After</th>
+                                        <th>Metrics</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Owner</strong></td>
+                                        <td>Anxious, reactive, gut-driven.</td>
+                                        <td>Confident, proactive, data-backed.</td>
+                                        <td>Decision time reduced by 70%.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Growth</strong></td>
+                                        <td>Cash is flat, margins are unclear.</td>
+                                        <td>Growth quality improves via visibility.</td>
+                                        <td>CCC improves by 15–25 days.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Working Capital</strong></td>
+                                        
+                                        <td>Money locked in dead inventory and slow customers.</td>
+                                        <td>Liquidity freed up for expansion and safety buffers.</td>
+                                        <td>Receivables reduced by 10–15 days.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Finance Team</strong></td>
+                                        <td>Manual entry, reconciliation, and late reporting.</td>
+                                        <td>Upgraded to analysis, decision support, and strategy.</td>
+                                        <td>Analysis time rises from 20% to 60%.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Risk Control</strong></td>
+                                        <td>Spikes and leakages noticed months too late.</td>
+                                        <td>Deviations flagged instantly via near real-time alerts.</td>
+                                        <td>Overrun detection slashed to < 2 weeks.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Execution Group -->
+                <div id="group-execution" class="content-group">
+                    <!-- Customer Profile -->
+                    <section id="customer-profile" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span>
+                                PARTNERSHIP (Chapter 14)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">Target Customer Profile</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">The ideal decision-makers and
+                                verticals that benefit most from the system.</p>
+                        </div>
+
+                        <div class="profile-card">
+                            <div class="profile-column">
+                                <span class="profile-chip">Ideal Profile</span>
+                                <h4 class="fraunces">Ideal Customer Profile</h4>
+                                <ul class="bullet-list">
+                                    <li><strong>Annual Revenue:</strong> ₹20 Cr to ₹500 Cr+</li>
+                                    <li><strong>Industry:</strong> Trading, Manufacturing, Retail, SaaS / D2C</li>
+                                    <li><strong>Pain:</strong> High revenue complexity, cash unpredictability.</li>
+                                    <li><strong>Stage:</strong> Scaling fast or stuck beyond ₹30 Cr threshold.</li>
+                                    <li><strong>Structure:</strong> Promoter-led or 2nd Gen MBAs taking over.</li>
+                                </ul>
+                            </div>
+                            <div class="profile-column">
+                                <span class="profile-chip">Buying Context</span>
+                                <h4 class="fraunces">The Buying Trigger</h4>
+                                <ul class="bullet-list">
+                                    <li><strong>Maturity:</strong> Tally or basic ERP users who need "The Next Level."</li>
+                                    <li><strong>Trigger:</strong> Recent cash crunch or suspicious profit-cash gap.</li>
+                                    <li><strong>Decision Maker:</strong> Founder / MD / Partner primarily.</li>
+                                    <li><strong>Outcome Desired:</strong> Peace of mind and predictable growth.</li>
+                                    <li><strong>Integration:</strong> ERP cloud or local access (Tally/Zoho/SAP B1).</li>
+                                    <li><strong>Value Prop:</strong> "The Digital CFO for Growing Businesses."</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Delivery -->
+                    <section id="delivery" class="reveal">
+                        <div style="margin-bottom: 32px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent-teal); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">
+                                <span style="height: 2px; width: 20px; background: var(--accent-teal);"></span> ROADMAP
+                                (Chapter 15)
+                            </div>
+                            <h2 class="hero-title" style="margin-bottom: 8px;">Delivery & Engagement Model</h2>
+                            <p style="color: var(--text-muted); font-size: 16px;">The structured onboarding and
+                                operational rhythm of our partnership.</p>
+                        </div>
+
+                        <div class="roadmap-card">
+                            <!-- Step 1 -->
+                            <div class="roadmap-step">
+                                <div class="roadmap-left">
+                                    <span class="roadmap-phase">Onboarding</span>
+                                    <span class="roadmap-time">Week 1–2</span>
+                                </div>
+                                <div class="roadmap-center">
+                                    <div class="roadmap-dot"></div>
+                                </div>
+                                <div class="roadmap-right">
+                                    <h4 class="roadmap-title">Connect & Calibrate</h4>
+                                    <ul class="roadmap-list">
+                                        <li>Connect Tally, Zoho, bank feeds, Excel — current systems stay.</li>
+                                        <li>Finfully pulls 24 months of history for pattern recognition.</li>
+                                        <li>Dashboard baseline built and calibrated to your business logic.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Step 2 -->
+                            <div class="roadmap-step">
+                                <div class="roadmap-left">
+                                    <span class="roadmap-phase">Go-Live</span>
+                                    <span class="roadmap-time">Week 3–4</span>
+                                </div>
+                                <div class="roadmap-center">
+                                    <div class="roadmap-dot"></div>
+                                </div>
+                                <div class="roadmap-right">
+                                    <h4 class="roadmap-title">The First Signal</h4>
+                                    <ul class="roadmap-list">
+                                        <li>Dashboard goes live with your real-time data flow.</li>
+                                        <li>WhatsApp and email alerts begin hitting the owner's phone.</li>
+                                        <li>Dedicated CSM introduced — first Weekly Clarity Review scheduled.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div class="roadmap-step">
+                                <div class="roadmap-left">
+                                    <span class="roadmap-phase">Rhythm</span>
+                                    <span class="roadmap-time">Week 5+</span>
+                                </div>
+                                <div class="roadmap-center">
+                                    <div class="roadmap-dot"></div>
+                                </div>
+                                <div class="roadmap-right">
+                                    <h4 class="roadmap-title">The 30-Minute Monday</h4>
+                                    <ul class="roadmap-list">
+                                        <li>Weekly CSM calls move from setup to execution support.</li>
+                                        <li>Alert thresholds refined based on your feedback loops.</li>
+                                        <li>Monthly deep-dives on unit economics and margin drift.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Step 4 -->
+                            <div class="roadmap-step">
+                                <div class="roadmap-left">
+                                    <span class="roadmap-phase">Stability</span>
+                                    <span class="roadmap-time">Ongoing</span>
+                                </div>
+                                <div class="roadmap-center">
+                                    <div class="roadmap-dot"></div>
+                                </div>
+                                <div class="roadmap-right">
+                                    <h4 class="roadmap-title">Decision Mastery</h4>
+                                    <ul class="roadmap-list">
+                                        <li>CSM remains your permanent partner for financial questions.</li>
+                                        <li>System intelligence grows as it learns your peak/lean seasons.</li>
+                                        <li>Visibility → Clarity → Stability → Unstoppable Growth.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Final Promise -->
+                    <section id="final-promise" class="reveal">
+                        <div class="closing-box">
+                            <h2 class="fraunces">The Promise</h2>
+                            <p>To become the <strong>Financial Brain for Growing Businesses</strong>. Not replacing your team. <br> Not replacing your ERP. Sitting above everything and guiding decisions continuously.</p>
+                            <p>We know the frustration of seeing revenue grow while cash stays flat. We know the anxiety of missing a <br> high-risk signal because it was buried in a ledger. <span class="accent-text">That’s why we built Finfully.</span></p>
+                            <span class="closing-emphasis">The Transformation: From financial uncertainty to predictable, profitable momentum.</span>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Screenshot Lightbox -->
+    <div id="screenshot-modal" class="modal" onclick="closeModal()">
+        <button class="modal-close">&times;</button>
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <img id="modal-img" src="" alt="Dashboard Preview" class="modal-img">
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function openModal(imgSrc) {
+            const modal = document.getElementById('screenshot-modal');
+            const img = document.getElementById('modal-img');
+            img.src = imgSrc;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scroll
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('screenshot-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scroll
+        }
+
+        // Close on ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Intersection Observer for scroll-reveal
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        function observeReveal() {
+            document.querySelectorAll('.reveal').forEach(el => {
+                observer.observe(el);
+            });
+        }
+        observeReveal();
+
+        // Navbar Logic
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        const navItems = document.querySelectorAll('.nav-item');
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const sections = document.querySelectorAll('section');
+
+        // Group Mapping
+        const groupMapping = {
+            'Introduction': 'group-introduction',
+            'Analysis': 'group-analysis',
+            'Capabilities': 'group-capabilities',
+            'Outcomes': 'group-outcomes',
+            'Execution': 'group-execution'
+        };
+
+        function switchGroup(groupId) {
+            const currentActive = document.querySelector('.content-group.active');
+            if (currentActive && currentActive.id === groupId) return; // Prevent reset if already active
+
+            contentGroups.forEach(group => {
+                if (group.id === groupId) {
+                    group.classList.add('active');
+                    // Optional: Reset animations only when switching to a NEW group
+                    group.querySelectorAll('.reveal').forEach(r => r.classList.remove('active'));
+                    // Small delay to ensure display: block is processed before observe
+                    setTimeout(() => {
+                        group.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+                    }, 100);
+                } else {
+                    group.classList.remove('active');
+                }
+            });
+        }
+
+        // Mobile Menu Toggle
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('mobile-active');
+            mobileToggle.classList.toggle('active');
+        });
+
+        // Nav Item Click (Tab Switching)
+        navItems.forEach(item => {
+            const link = item.querySelector('.nav-link');
+            const groupName = link.textContent.trim().split(' ')[0];
+            const groupId = groupMapping[groupName];
+
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 1024) {
+                    item.classList.toggle('mobile-expand');
+                } else {
+                    // Switch group and scroll to top
+                    switchGroup(groupId);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Dropdown Item Click
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                const targetId = item.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                const parentGroup = targetSection.closest('.content-group');
+
+                if (parentGroup) {
+                    switchGroup(parentGroup.id);
+                }
+
+                if (window.innerWidth <= 1024) {
+                    navMenu.classList.remove('mobile-active');
+                    navItems.forEach(ni => ni.classList.remove('mobile-expand'));
+                }
+            });
+        });
+
+        // Navbar Scroll Logic
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Navigation Highlighting
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const activeGroup = document.querySelector('.content-group.active');
+            if (!activeGroup) return;
+
+            const activeSections = activeGroup.querySelectorAll('section');
+            activeSections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                const link = item.querySelector('.nav-link');
+                const subLinks = item.querySelectorAll('.dropdown-item');
+                let isParentActive = false;
+
+                subLinks.forEach(sub => {
+                    sub.classList.remove('active');
+                    if (sub.getAttribute('href').substring(1) === current) {
+                        sub.classList.add('active');
+                        isParentActive = true;
+                    }
+                });
+
+                if (isParentActive) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
